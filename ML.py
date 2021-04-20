@@ -208,3 +208,14 @@ def DoLogisticRegression(X_train, y_train, X_test, y_test):
     print('TEST_AUC@class_%d: %.4f'%(i,auc))
     
     return auc
+
+def ComputeR(label_physical, predict_physical):
+    return pearsonr(label_physical, predict_physical), spearmanr(label_physical, predict_physical)
+
+def PlotShap():
+    explainer = shap.KernelExplainer(clf.predict_proba, X_train, link="logit")
+    shap_values = explainer.shap_values(X_test)
+    shap.summary_plot(shap_values[1], X_test)
+    shap.force_plot(explainer.expected_value[0], shap_values[1], X_test, link="logit")
+
+    return
